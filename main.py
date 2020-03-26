@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import ttk
 from numpy import *
+import math
 from os import *
 
 #python Dividends Calc
@@ -14,16 +15,18 @@ root.configure(bg='white', highlightbackground="black")
 #Variables
 Stock = StringVar()
 Div = StringVar()
-YearlyDiv = float
+YearlyDiv = StringVar()
 QrtlyDiv = float
 DivSchedule = ["January", "April", "July", "October"]
 calendar = ["January", "February", "March", "April", "May", "June", "July", "August",
     "September", "October", "November", "December"]
-QtyStock = 1
+QtyStock = "1"
 MultiPayQ = float
 MultiPayY = float
+MultiPtemp = float
+MultiYtemp = float
 
-# ----- Entry Fields and Labels LEFT SIDE------
+# ----- Entry Fields and Labels LEFT SIDE----------------
 label_1 = Label(root, text="Stock Price: $", fg="black", bg="white").grid(row=0, sticky = E)
 label_2 = Label(root, text="Yearly Div %:", fg="black", bg="white").grid(row=1, sticky = E)
 label_3 = Label(root, text="Qty of Stock:", fg="black", bg="white").grid(row=2, sticky = E)
@@ -39,6 +42,7 @@ entry_2.grid(row=1, column = 1)
 entry_3 = Entry(root, width=10, textvariable = QtyStock)
 entry_3.configure(bg="white", fg="black")
 entry_3.grid(row=2, column = 1)
+entry_3.insert(0, string= "1")
 
 #-----------------------RIGHT-Side labels------------------
 label_StkPrice = Label(root, text = "Enter Data, Click Update!")
@@ -59,7 +63,7 @@ label_QrtlyCount.grid(row=4, column=3)
 label_SessionCount = Label(root, text = "Days until payout: ", font= 'Helvetica 16 bold', fg="black", bg="white")
 label_SessionCount.grid(row=5, column=3)
 
-
+#----------------------------------------------------------------
 
 #Calc YEARLY Div Pay, user inputs stockPrice(i.e. 4.52) && YrlyDiv % (i.e. 10.12) = YrlyPayout
 def YearlyPay():
@@ -80,19 +84,23 @@ def YearlyPay():
 #Multi Stock Pay Calc
 
 def Multi():
+    YearTemp = YearlyDiv.get()
+    QtyTemp = int(QtyStock)
+    MultiPayY = YearTemp * QtyTemp
+    MultiPayQ1 = (YearTemp * QtyTemp)
+    #MultiPayQ = MultiPayQ1 / 4
+    MultiPayY = float
 
-    MultiPayY = YearlyDiv * QtyStock
-    MultiPayQ = QtyStock * QtyStock
-
-    label_YearYield.configure(text="Your Yearly Yield: $ %.3f " % MultiPayY, font='Helvetica 14 bold', fg = "green")
-    label_QrtlyYield.configure(text="Your Qrtrly XX Yield: $ %.3f " % MultiPayQ, font='Helvetica 14 bold', fg = "green")
+    label_YearYield.configure(text="Your Yearly Yield: $" + str(MultiPayY), font='Helvetica 14 bold', fg = "green")
+    label_QrtlyYield.configure(text="Your xxQrtrly Yield: $" + str(MultiPayQ), font='Helvetica 14 bold', fg = "green")
+    
     return;
 
 
 
 
 def action():
-    if int(QtyStock) < 2:
+    if int(entry_3.get()) < 2:
         YearlyPay()
     else:
         Multi()
