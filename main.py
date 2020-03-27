@@ -1,30 +1,29 @@
 from tkinter import *
 from tkinter import ttk
 from numpy import *
-import math
+#import Calcs
 from os import *
 
 #python Dividends Calc
 #Frame and Window 
 root = Tk()
 #root.iconbitmap(root, default = "TpyICO.ico" )
-root.geometry('450x275')
+root.geometry('475x275')
 root.title("Stock Divi Calc- By @Nimble.Berto")
 root.configure(bg='white', highlightbackground="black")
 
 #Variables
 Stock = StringVar()
 Div = StringVar()
-YearlyDiv = StringVar()
+YearlyDiv = float
 QrtlyDiv = float
 DivSchedule = ["January", "April", "July", "October"]
 calendar = ["January", "February", "March", "April", "May", "June", "July", "August",
     "September", "October", "November", "December"]
 QtyStock = "1"
-MultiPayQ = float
-MultiPayY = float
-MultiPtemp = float
-MultiYtemp = float
+xYd = float()
+xQd = float()
+
 
 # ----- Entry Fields and Labels LEFT SIDE----------------
 label_1 = Label(root, text="Stock Price: $", fg="black", bg="white").grid(row=0, sticky = E)
@@ -57,8 +56,8 @@ label_QrtlyYield = Label(root, text = "Qrtly Payout: $", font= 'Helvetica 14 bol
 label_QrtlyYield.grid(row=3, column=3)
 
 
-label_QrtlyCount = Label(root, text = "Next Qrtrly Pay is: ", font= 'Helvetica 14 bold', fg="black", bg="white")
-label_QrtlyCount.grid(row=4, column=3)
+label_QtyPay = Label(root, text = "Qty Qrtrly Pay is: ", font= 'Helvetica 14 bold', fg="black", bg="white")
+label_QtyPay.grid(row=4, column=3)
 
 label_SessionCount = Label(root, text = "Days until payout: ", font= 'Helvetica 16 bold', fg="black", bg="white")
 label_SessionCount.grid(row=5, column=3)
@@ -71,31 +70,29 @@ def YearlyPay():
         DivTemp = float(Div.get())
         QrtlyDiv = float()
         try:
-            YearlyDiv = StockTemp * (DivTemp / 100)
-            QrtlyDiv = YearlyDiv / 4
+            YearlyDiv = float(StockTemp * (DivTemp / 100))
+            QrtlyDiv = float(YearlyDiv / 4)
         except ZeroDivisionError:
-            YearlyDiv = Stock/1
+            YearlyDiv = float(Stock/1)
     
         label_YearYield.configure(text="Your Yearly Yield: $ %.3f " % YearlyDiv, font='Helvetica 14 bold', fg = "green")
         label_QrtlyYield.configure(text="Your Qrtly Yield: $ %.3f " % QrtlyDiv, font='Helvetica 14 bold', fg = "green")
-
+        
 
 
 #Multi Stock Pay Calc
 
 def Multi():
-    YearTemp = YearlyDiv.get()
-    QtyTemp = int(QtyStock)
-    MultiPayY = YearTemp * QtyTemp
-    MultiPayQ1 = (YearTemp * QtyTemp)
-    #MultiPayQ = MultiPayQ1 / 4
-    MultiPayY = float
+    X = QtyStock #Qty of Stock
+    Yd = YearlyDiv #Calculated Yearly Div
+    Qd = QrtlyDiv # Calculated Qrtrly Div
 
-    label_YearYield.configure(text="Your Yearly Yield: $" + str(MultiPayY), font='Helvetica 14 bold', fg = "green")
-    label_QrtlyYield.configure(text="Your xxQrtrly Yield: $" + str(MultiPayQ), font='Helvetica 14 bold', fg = "green")
+    xYd = float(QtyStock) * float(YearlyDiv)
+    xQd = float(X * Qd)
+
+    label_QtyPay.configure(text="Your Multi Pay / Year is $ %.3f " % xYd, font= 'Helvetica 14 bold')
+
     
-    return;
-
 
 
 
